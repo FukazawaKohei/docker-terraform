@@ -1,0 +1,1 @@
+# staging環境terraformのソースコード記載場所

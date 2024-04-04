@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  terraform:
+    build: ./docker/terraform
+    platform: linux/x86_64
+    volumes:
+      - ~/.aws:/root/.aws
+      - ./src:/src
+    tty: true
+
+  mysql:
+    build: ./docker/mysql
+    ports:
+      - 3300:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf:rw
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'pass'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: 'database'
+      TZ: 'Asia/Tokyo'
+
+volumes:
+  mysql-data:
+    driver: local
